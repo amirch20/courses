@@ -17,6 +17,7 @@ class filtercontroller extends Controller
 {
     public function course_filter(Request $request)
     {
+        // return "hy";
         try {
             $data = Course::where('course_title', 'LIKE', '%'. $request->course_title. '%')
             ->where('course_privacy', 'LIKE', '%'. $request->course_privacy. '%')
@@ -31,9 +32,10 @@ class filtercontroller extends Controller
 
     public function user_filter(Request $request)
     {
+        // return "hy";
         try {
             $data = User::where('user_name', 'LIKE', '%'. $request->user_name. '%')
-            ->Where('email', 'LIKE', '%'.$request->email. '%')
+            ->where('email', 'LIKE', '%'. $request->email. '%')
             ->Where('role', 'LIKE', '%'.$request->role.'%')
             ->get();
         } catch (\Throwable $th) {

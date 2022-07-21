@@ -22,13 +22,13 @@ Route::post('role_create',[App\Http\Controllers\Api\role\rolecontroller::class,'
 Route::get('role_list',[App\Http\Controllers\Api\role\rolecontroller::class,'role_list']);
 Route::post('role_delete',[App\Http\Controllers\Api\role\rolecontroller::class,'role_delete']);
 Route::post('user_insert',[App\Http\Controllers\Api\user\userscontroller::class,'user_insert']);
-Route::post('user_list',[App\Http\Controllers\Api\user\userscontroller::class,'user_list']);
+Route::get('user_list',[App\Http\Controllers\Api\user\userscontroller::class,'user_list']);
 Route::post('user_delete',[App\Http\Controllers\Api\user\userscontroller::class,'user_delete']);
 Route::post('system_setting_create',[App\Http\Controllers\Api\system_settings\system_setting::class,'system_setting_create']);
 Route::post('system_setting_list',[App\Http\Controllers\Api\system_settings\system_setting::class,'system_setting_list']);
 Route::post('system_setting_delete',[App\Http\Controllers\Api\system_settings\system_setting::class,'system_setting_delete']);
 Route::post('course_create',[App\Http\Controllers\Api\course\coursecontroller::class,'course_create']);
-Route::post('course_list',[App\Http\Controllers\Api\course\coursecontroller::class,'course_list']);
+Route::get('course_list',[App\Http\Controllers\Api\course\coursecontroller::class,'course_list']);
 Route::post('course_delete',[App\Http\Controllers\Api\course\coursecontroller::class,'course_delete']);
 Route::post('category_create',[App\Http\Controllers\Api\category\categorycontroller::class,'category_create']);
 Route::post('category_show',[App\Http\Controllers\Api\category\categorycontroller::class,'category_show']);
