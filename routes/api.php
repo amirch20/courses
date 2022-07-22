@@ -78,7 +78,6 @@ Route::post('image_delete',[App\Http\Controllers\Api\add_lecture\imagecontroller
 Route::post('other_video_store',[App\Http\Controllers\Api\add_lecture\othercontroller::class,'other_video_store']);
 Route::post('other_video_show',[App\Http\Controllers\Api\add_lecture\othercontroller::class,'other_video_show']);
 Route::post('other_video_delete',[App\Http\Controllers\Api\add_lecture\othercontroller::class,'other_video_delete']);
-Route::post('other_video_delete',[App\Http\Controllers\Api\add_lecture\othercontroller::class,'other_video_delete']);
 Route::post('assessment_store',[App\Http\Controllers\Api\add_assessment\assessmentcontroller::class,'assessment_store']);
 Route::post('assessment_show',[App\Http\Controllers\Api\add_assessment\assessmentcontroller::class,'assessment_show']);
 Route::post('assessment_delete',[App\Http\Controllers\Api\add_assessment\assessmentcontroller::class,'assessment_delete']);
@@ -119,3 +118,4 @@ Route::post('lession_filter',[App\Http\Controllers\Api\filter\filtercontroller::
 Route::post('admin_signup',[App\Http\Controllers\Api\admin\admincontroller::class,'admin_signup']);
 Route::post('popular_course_list',[App\Http\Controllers\Api\course\popularcourse::class,'popular_course_list']);
 Route::post('top_category_list',[App\Http\Controllers\Api\main_category\topcategory::class,'top_category_list']);
+Route::get('latest_course_list',[App\Http\Controllers\Api\course\latestcontroller::class,'latest_course_list']);
