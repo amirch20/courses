@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB,Validator};
 use App\Models\Admin;
 use Hash;
+use Auth;
 class admincontroller extends Controller
 {
     public function admin_signup(Request $request)
@@ -65,4 +66,40 @@ class admincontroller extends Controller
         }
     }
 
+    public function admin_login(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required',
+                'password' =>'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = [
+                'email' => $request->email,
+                'password' => $request->password
+            ];
+
+            if (auth()->guard('admin')->attempt($data)) {
+                $token = Auth::guard('admin')->user()->createToken('LaravelAuthApp')->accessToken;
+                $data=Auth::guard('admin')->user();
+               return response()->json(['success'=>'true','token'=>$token,'data'=>$data,'message'=>'Admin login successfully']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
+    }
+    public function admin_logout(Request $request)
+    {
+        // return "hy";
+        try {
+            $data = auth()->guard('admin')->logout();
+            return response()->json(['success'=>true,'message'=>'logout successfully']);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
+
+
+    }
 }

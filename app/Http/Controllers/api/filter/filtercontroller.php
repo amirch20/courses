@@ -38,6 +38,7 @@ class filtercontroller extends Controller
             ->where('email', 'LIKE', '%'. $request->email. '%')
             ->Where('role', 'LIKE', '%'.$request->role.'%')
             ->get();
+            return response()->json(['success'=>true,'data'=>$data,'message'=>'user data show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }
@@ -100,5 +101,15 @@ class filtercontroller extends Controller
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }
+    }
+
+    public function course_type_filter(Request $request)
+    {
+        if($request->price==0)
+        {
+            $data = Course::where('price', 'LIKE', '%'. $request->price. '%')->get();
+            return $data;
+        }
+
     }
 }
