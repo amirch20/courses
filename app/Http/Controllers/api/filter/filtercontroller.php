@@ -105,10 +105,19 @@ class filtercontroller extends Controller
 
     public function course_type_filter(Request $request)
     {
-        if($request->price==0)
+        if($request->price == 0)
         {
-            $data = Course::where('price', 'LIKE', '%'. $request->price. '%')->get();
+            $data = Course::where('price', '==', $request->price)->get();
             return $data;
+        }
+        else if($request->price >= 0)
+        {
+            $data = Course::where('price', '>=', $request->price)->get();
+            return $data;
+        }
+        else
+        {
+            return "Something went wrong";
         }
 
     }

@@ -32,7 +32,7 @@ class forgotpasswordcontroller extends Controller
 
                         $tokenData=password_reset::where('email', $request->email)->first();
                         $token=$tokenData->token;
-                        // return $token;
+                        return $token;
                         \Mail::to($request->email)->send(new \App\Mail\Mail($token));
                         return response()->json(['success'=>true,'message'=>'check your email']);
 

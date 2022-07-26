@@ -120,11 +120,11 @@ Route::post('admin_login',[App\Http\Controllers\Api\admin\admincontroller::class
 // Route::group(['middleware' => ['CheckScopes']], function() {
 Route::get('admin_logout',[App\Http\Controllers\Api\admin\admincontroller::class,'admin_logout']);
 // });
-// Route::post('admin_forget',[App\Http\Controllers\Api\forgot\forgotpasswordcontroller::class,'admin_forget']);
+Route::post('admin_forget',[App\Http\Controllers\Api\forgot\forgotpasswordcontroller::class,'admin_forget']);
 Route::get('popular_course_list',[App\Http\Controllers\Api\course\popularcourse::class,'popular_course_list']);
 Route::get('top_category_list',[App\Http\Controllers\Api\main_category\topcategory::class,'top_category_list']);
 Route::get('latest_course_list',[App\Http\Controllers\Api\course\latestcontroller::class,'latest_course_list']);
-Route::get('course_type_filter',[App\Http\Controllers\Api\filter\filtercontroller::class,'course_type_filter']);
+Route::post('course_type_filter',[App\Http\Controllers\Api\filter\filtercontroller::class,'course_type_filter']);
 Route::post('review_store',[App\Http\Controllers\Api\review\reviewcontroller::class,'review_store']);
 Route::get('review_list',[App\Http\Controllers\Api\review\reviewcontroller::class,'review_list']);
 Route::post('review_delete',[App\Http\Controllers\Api\review\reviewcontroller::class,'review_delete']);
