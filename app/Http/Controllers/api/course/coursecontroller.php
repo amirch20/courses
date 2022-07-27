@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB,Validator};
 use App\Models\Course;
+use URL;
+use Illuminate\Support\Facades\Storage;
 class coursecontroller extends Controller
 {
     public function course_create(Request $request)
@@ -22,9 +24,10 @@ class coursecontroller extends Controller
         $data->outcomes = $request->outcomes??$data->outcomes;
         $data->price = $request->price??$data->price;
         $data->course_privacy = $request->course_privacy??$data->course_privacy;
-        $imageName = time().'.'.$request->thumbnail->getClientOriginalExtension();
-        $request->thumbnail->move(public_path('images'),$imageName);
-        $data->thumbnail=$imageName??$data->thumbnail;
+        $image = $request->file('thumbnail')->store('public/images');
+        $filename = $request->file('thumbnail')->hashName();
+        $pic = ('storage/images/'.$imageName1);
+        $data->subjects_id = $request->subjects_id??$data->subjects_id;
         $query = $data->save();
         }
         else
@@ -42,6 +45,7 @@ class coursecontroller extends Controller
             'price' => 'required',
             'course_privacy' => 'required',
             'thumbnail' => 'required',
+            'subjects_id'=>'required'
         ]);
         if($validator->fails()){
             return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -58,9 +62,10 @@ class coursecontroller extends Controller
         $data->outcomes = $request->outcomes;
         $data->price = $request->price;
         $data->course_privacy = $request->course_privacy;
-        $imageName = time().'.'.$request->thumbnail->getClientOriginalExtension();
-        $request->thumbnail->move(public_path('images'),$imageName);
-        $data->thumbnail=$imageName;
+        $imageName1 = time().'.'.$request->thumbnail->getClientOriginalName();
+        $request->thumbnail->move(public_path('images'),$imageName1);
+        $data->thumbnail=$imageName1;
+        $data->subjects_id = $request->subjects_id;
         $query=$data->save();
         }
         if($query)
@@ -82,11 +87,15 @@ class coursecontroller extends Controller
     public function course_list()
     {
         try {
-            $data = Course::all();
-            return response()->json(['success'=>true,'data'=>$data,'message'=>'course list show successfully']);
+            $data = Course::join('categories','categories.id', '=', 'courses.category_id')
+        ->select('categories.category_name','courses.course_title','courses.instructor','courses.price','courses.course_privacy','courses.sales','courses.lession')
+        ->get();
+       return response()->json(['success'=>true,'data'=>$data,'message'=>'course list show successfully']);
         } catch (\Throwable $th) {
-            return response()->json(['message'=>$th]);
+            return response()->json(['message'=>$th->getmessage()]);
         }
+        
+       
     }
     public function course_delete(Request $request)
     {

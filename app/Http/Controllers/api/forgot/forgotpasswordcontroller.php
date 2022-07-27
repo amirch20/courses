@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\forgot;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Str;
+use Hash;
 use Carbon\Carbon;
 use App\Models\password_reset;
 use App\Models\Admin;
@@ -32,14 +33,45 @@ class forgotpasswordcontroller extends Controller
 
                         $tokenData=password_reset::where('email', $request->email)->first();
                         $token=$tokenData->token;
-                        return $token;
+                        // return $token;
                         \Mail::to($request->email)->send(new \App\Mail\Mail($token));
                         return response()->json(['success'=>true,'message'=>'check your email']);
-
                     }
-                    else
+    }
+    public function reset_admin_password(Request $request,$token)
+    {
+        // return $request;
+        // $rules = [
+        //     'password'   => 'required',
+        //     'confirm_password'=>'required'
+
+        // ];
+
+        // $validate = Validator::make($request->all(), $rules);
+        // if($validate->fails())
+        // {
+        //     //  $response['data']['error'] = $validate->messages();
+        //      return response()->json(['message'=>$validate->messages()]);
+        // }
+        $email=password_reset::where('token', $token)->first();
+                    // return $email->email;
+                    if($email->email)
                     {
-                        $response['data']['message'] = "Incorrect Email enterd";
+                        $user=Admin::where('email', $email->email)->update([
+
+                            'password' => Hash::make($request->password),
+                            'confirm_password' => $request->confirm_password
+                        ]);
+                    }
+
+
+                    if($email)
+                    {
+                        DB::commit();
+                        return response()->json(['message'=>'Password reset sucessfully']);
+                        // $response['data']['code']= 200;
+                        // $response['data']['message'] = "Congratulation your password change successfully";
+                        // $response['data']['result'] = $email;
                     }
     }
 }

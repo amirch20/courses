@@ -14,8 +14,8 @@ class reviewcontroller extends Controller
             if($request->id)
             {
                 $data = Review::find($request->id);
-                $data->user_id = $request->user_id??$data->user_id;
-                $data->course_id = $request->course_id??$data->course_id;
+                $data->users_id = $request->users_id??$data->users_id;
+                $data->courses_id = $request->courses_id??$data->courses_id;
                 $data->rating = $request->rating??$data->rating;
                 $data->your_review = $request->your_review??$data->your_review;
                 $data->name = $request->name??$data->name;
@@ -25,8 +25,8 @@ class reviewcontroller extends Controller
             else
             {
                 $validator = Validator::make($request->all(), [
-                    'user_id' => 'required',
-                    'course_id' => 'required',
+                    'users_id' => 'required',
+                    'courses_id' => 'required',
                     'rating' => 'required',
                     'your_review' => 'required',
                     'name' => 'required',
@@ -36,8 +36,8 @@ class reviewcontroller extends Controller
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
                 }
                 $data = new Review;
-                $data->user_id = $request->user_id;
-                $data->course_id = $request->course_id;
+                $data->users_id = $request->users_id;
+                $data->courses_id = $request->courses_id;
                 $data->rating = $request->rating;
                 $data->your_review = $request->your_review;
                 $data->name = $request->name;

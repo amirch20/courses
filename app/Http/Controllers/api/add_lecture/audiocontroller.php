@@ -19,6 +19,7 @@ class audiocontroller extends Controller
                 $imageName = time().'.'.$request->audio_file->getClientOriginalExtension();
                 $request->audio_file->move(public_path('images'),$imageName);
                 $data->audio_file=$imageName??$data->audio_file;
+                $data->lecture_type="audio";
                 $query=$data->save();
             }
             else
@@ -37,6 +38,7 @@ class audiocontroller extends Controller
                 $imageName = time().'.'.$request->audio_file->getClientOriginalExtension();
                 $request->audio_file->move(public_path('images'),$imageName);
                 $data->audio_file=$imageName;
+                $data->lecture_type="audio";
                 $query = $data->save();
             }
             if($query)

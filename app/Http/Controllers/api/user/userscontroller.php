@@ -24,6 +24,7 @@ class userscontroller extends Controller
             $cat->confirm_password = $request->confirm_password?? $cat->confirm_password;
             $cat->gender = $request->gender?? $cat->gender;
             $cat->role = $request->role?? $cat->role;
+            $cat->status="active";
             $query = $cat->save();
         }
         else
@@ -48,6 +49,7 @@ class userscontroller extends Controller
             $cat->confirm_password = $request->confirm_password;
             $cat->gender = $request->gender;
             $cat->role = $request->role;
+            $cat->status="active";
             $query = $cat->save();
         }
                 if($query)
@@ -66,7 +68,7 @@ class userscontroller extends Controller
                 }
                 return response()->json($return);
         } catch (\Throwable $th) {
-            return resposne()->json(['message'=>$th->getmessage()]);
+            return response()->json(['message'=>$th->getmessage()]);
         }
 
         }
@@ -74,7 +76,7 @@ class userscontroller extends Controller
     public function user_list()
     {
         try {
-            $data = User::select(['user_name','email','gender','role'])->get();
+            $data = User::select(['user_name','email','gender','role','status'])->get();
             return response()->json(['success'=>true,'data'=>$data,'message'=>'user list show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);

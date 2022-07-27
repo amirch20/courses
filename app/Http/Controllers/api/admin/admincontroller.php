@@ -94,6 +94,7 @@ class admincontroller extends Controller
     {
         // return "hy";
         try {
+            return auth()->guard('admin');
             $data = auth()->guard('admin')->logout();
             return response()->json(['success'=>true,'message'=>'logout successfully']);
         } catch (\Throwable $th) {

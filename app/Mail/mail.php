@@ -29,6 +29,7 @@ class mail extends Mailable
      */
     public function build()
     {
-        return $this->from('umair705075@gmail.com')->view('sendmail');
+        return $this->subject('Mail from ItSolutionStuff.com')
+                    ->view('sendmail');
     }
 }
