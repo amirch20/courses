@@ -19,6 +19,7 @@ class imagecontroller extends Controller
                 $imageName = time().'.'.$request->image_file->getClientOriginalExtension();
                 $request->image_file->move(public_path('images'),$imageName);
                 $data->image_file=$imageName??$data->image_file;
+                $data->lecture_type='image';
                 $query=$data->save();
             }
             else
@@ -37,6 +38,7 @@ class imagecontroller extends Controller
                 $imageName = time().'.'.$request->image_file->getClientOriginalExtension();
                 $request->image_file->move(public_path('images'),$imageName);
                 $data->image_file=$imageName;
+                $data->lecture_type='image';
                 $query = $data->save();
             }
             if($query)

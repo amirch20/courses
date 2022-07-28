@@ -13,7 +13,6 @@ class joincontroller extends Controller
     public function subject_join(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'subjects_id' => 'required',
             ]);
@@ -22,9 +21,16 @@ class joincontroller extends Controller
             }
             $data = Course::where('courses.subjects_id',$request->subjects_id)
             ->join('subjects', 'subjects.id', '=', 'courses.subjects_id')
-            ->select('subjects.name')
+            ->join('teachers', 'subjects.teachers_id', '=', 'teachers.id')
+            ->join('modules','subjects.modules_id','=','modules.id')
+            ->join('lessions','modules.lessions_id','=','lessions.id')
+            ->select('teachers.teacher_name','subjects.name')
             ->get();
-            return response()->json(['success'=>true,'data'=>$data,'message'=>'subjects name show successfully']);
+         $count =$data[0]->id;
+         $col=count(array($count));
+         $count2=$data[0]->created_at;
+         $lession=count(array($count2));
+            return response()->json(['success'=>true,'data'=>$data,'modules'=>$col,'lession'=>$lession,'message'=>'subjects name show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }

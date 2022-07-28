@@ -23,7 +23,6 @@ class userscontroller extends Controller
             $cat->password = $request->password?? $cat->password;
             $cat->confirm_password = $request->confirm_password?? $cat->confirm_password;
             $cat->gender = $request->gender?? $cat->gender;
-            $cat->role = $request->role?? $cat->role;
             $cat->status="active";
             $query = $cat->save();
         }
@@ -36,7 +35,6 @@ class userscontroller extends Controller
                 'password' => 'required',
                 'confirm_password' => 'required',
                 'gender' => 'required',
-                'role' => 'required',
             ]);
             if($validator->fails()){
                 return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -48,7 +46,6 @@ class userscontroller extends Controller
             $cat->password = Hash::make($request->password);
             $cat->confirm_password = $request->confirm_password;
             $cat->gender = $request->gender;
-            $cat->role = $request->role;
             $cat->status="active";
             $query = $cat->save();
         }
@@ -76,7 +73,10 @@ class userscontroller extends Controller
     public function user_list()
     {
         try {
-            $data = User::select(['user_name','email','gender','role','status'])->get();
+            $data = DB::table('users')
+            ->join('roles','users.role_id','=','roles.id')
+            ->select('users.user_name','users.email','users.gender','users.status','roles.role_name')
+            ->get();
             return response()->json(['success'=>true,'data'=>$data,'message'=>'user list show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);

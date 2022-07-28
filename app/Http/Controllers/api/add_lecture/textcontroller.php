@@ -16,6 +16,7 @@ class textcontroller extends Controller
                 $data = Lecture_Text::find($request->id);
                 $data->title=$request->title??$data->title;
                 $data->text=$request->text??$data->text;
+                $data->lecture_type="text";
                 $query=$data->save();
             }
             else
@@ -30,6 +31,7 @@ class textcontroller extends Controller
                 $data = new Lecture_Text;
                 $data->title=$request->title;
                 $data->text=$request->text;
+                $data->lecture_type="text";
                 $query=$data->save();
             }
             if($query)

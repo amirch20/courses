@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB,Validator};
 use App\Models\Module;
+use App\Models\Lession;
 class modulecontroller extends Controller
 {
     public function module_store(Request $request)
@@ -55,9 +56,15 @@ class modulecontroller extends Controller
 
     public function module_list()
     {
+        
         try {
-            $data = Module::all();
-            return response()->json(['success'=>true,'data'=>$data,'message'=>'Module show successfully']);
+            $lession = DB::table('lessions')
+        ->join('modules','modules.lessions_id','=','lessions.id')
+        ->select('lessions.name')->count();
+        $data = DB::table('lessions')
+        ->join('modules','modules.lessions_id','=','lessions.id')
+        ->select('modules.name')->get();
+        return response()->json(['success'=>true,'data'=>$data,'lession'=>$lession,'message'=>'module show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }

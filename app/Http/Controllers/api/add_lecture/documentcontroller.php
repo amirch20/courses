@@ -19,6 +19,7 @@ class documentcontroller extends Controller
                 $imageName = time().'.'.$request->document_file->getClientOriginalExtension();
                 $request->document_file->move(public_path('images'),$imageName);
                 $data->document_file=$imageName??$data->document_file;
+                $data->lecture_type="document";
                 $query=$data->save();
             }
             else
@@ -37,6 +38,7 @@ class documentcontroller extends Controller
                 $imageName = time().'.'.$request->document_file->getClientOriginalExtension();
                 $request->document_file->move(public_path('images'),$imageName);
                 $data->document_file=$imageName;
+                $data->lecture_type="document";
                 $query = $data->save();
             }
             if($query)

@@ -17,6 +17,7 @@ class othercontroller extends Controller
                 $data->video_title=$request->video_title??$data->video_title;
                 $data->video_description=$request->video_description??$data->video_description;
                 $data->video_url=$request->video_url??$data->video_url;
+                $data->lecture_type='other video';
                 $query=$data->save();
             }
             else
@@ -33,6 +34,7 @@ class othercontroller extends Controller
                 $data->video_title=$request->video_title;
                 $data->video_description=$request->video_description;
                 $data->video_url=$request->video_url;
+                $data->lecture_type='other video';
                 $query=$data->save();
             }
             if($query)

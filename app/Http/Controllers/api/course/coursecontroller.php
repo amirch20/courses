@@ -86,6 +86,8 @@ class coursecontroller extends Controller
     }
     public function course_list()
     {
+        // $data=Course::all()->pluck('thumbnail');
+        // return !empty($data) ? URL::to('/storage/images/'.$data) : 'empty';
         try {
             $data = Course::join('categories','categories.id', '=', 'courses.category_id')
         ->select('categories.category_name','courses.course_title','courses.instructor','courses.price','courses.course_privacy','courses.sales','courses.lession')
@@ -94,8 +96,6 @@ class coursecontroller extends Controller
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }
-        
-       
     }
     public function course_delete(Request $request)
     {

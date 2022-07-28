@@ -15,6 +15,7 @@ class rolecontroller extends Controller
             {
                 $cat = Role::find($request->id);
                 $cat->role_name = $request->role_name??$cat->role_name;
+                $cat->status="active";
                 $query = $cat->save();
             }
             else
@@ -27,6 +28,7 @@ class rolecontroller extends Controller
                 }
                 $cat = new Role;
                 $cat->role_name = $request->role_name;
+                $cat->status="active";
                 $query = $cat->save();
             }
                     if($query)
@@ -52,7 +54,7 @@ class rolecontroller extends Controller
     public function role_list()
     {
         try {
-            $data = Role::all();
+            $data = Role::all('role_name','status');
             return response()->json(['success'=>true,'data'=>$data,'message'=>'role list show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
