@@ -17,6 +17,7 @@ class subjectcontroller extends Controller
                 $data->name = $request->name?? $data->name;
                 $data->teachers_id = $request->teachers_id?? $data->teachers_id;
                 $data->modules_id = $request->modules_id?? $data->modules_id;
+                $data->courses_id = $request->courses_id??$data->courses_id;
                 $query=$data->save();
             }
             else
@@ -25,6 +26,7 @@ class subjectcontroller extends Controller
                     'name' => 'required',
                     'teachers_id' => 'required',
                     'modules_id' => 'required',
+                    'courses_id'=>'required'
                 ]);
                 if($validator->fails()){
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -33,6 +35,7 @@ class subjectcontroller extends Controller
                 $data->name = $request->name;
                 $data->teachers_id = $request->teachers_id;
                 $data->modules_id = $request->modules_id;
+                $data->courses_id = $request->courses_id;
                 $query=$data->save();
             }
                     if($query)
@@ -57,11 +60,27 @@ class subjectcontroller extends Controller
         }
 
 
-    public function subject_list()
+    public function subject_list(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'courses_id' =>'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+        }
         try {
-            $data = Subject::all();
-            return response()->json(['success'=>true,'data'=>$data,'message'=>'Subject show successfully']);
+            $data= Subject::where('courses_id',$request->courses_id)
+            ->join('courses','subjects.courses_id','=','courses.id')
+            ->join('teachers','subjects.teachers_id','=','teachers.id')
+            ->join('modules','subjects.modules_id','=','modules.id')
+            ->join('lessions','modules.lessions_id','=','lessions.id')
+            ->select('subjects.id','subjects.name','teachers.teacher_name')
+            ->get();
+            $count = $data[0]->id;
+            $module = count(array($count));
+            $num = $data[0]->created_at;
+            $lession = count(array($num));
+            return response()->json(['success'=>true,'data'=>$data,'module'=>$module,'lession'=>$lession,'message'=>'subject show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }

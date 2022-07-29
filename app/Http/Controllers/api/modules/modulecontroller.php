@@ -56,14 +56,13 @@ class modulecontroller extends Controller
 
     public function module_list()
     {
-        
         try {
             $lession = DB::table('lessions')
         ->join('modules','modules.lessions_id','=','lessions.id')
         ->select('lessions.name')->count();
-        $data = DB::table('lessions')
-        ->join('modules','modules.lessions_id','=','lessions.id')
-        ->select('modules.name')->get();
+        $data = DB::table('modules')
+        ->join('subjects','subjects.modules_id','=','modules.id')
+        ->select('modules.id','modules.name')->get();
         return response()->json(['success'=>true,'data'=>$data,'lession'=>$lession,'message'=>'module show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);

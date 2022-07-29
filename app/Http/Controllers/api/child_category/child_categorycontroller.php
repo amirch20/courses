@@ -85,4 +85,20 @@ class child_categorycontroller extends Controller
             }
         }
     }
+
+    public function child_category_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Child_Category::where('id',$request->id)->first();
+            return response()->json(['success'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>$th->getmessage()]);
+        }
+    }
 }

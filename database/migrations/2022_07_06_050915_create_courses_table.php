@@ -18,8 +18,6 @@ class CreateCoursesTable extends Migration
             $table->string('course_title');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->unsignedBigInteger('subjects_id');
-            $table->foreign('subjects_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->string('instructor');
             $table->string('short_description');
             $table->longText('description')->nullable()->default('text');

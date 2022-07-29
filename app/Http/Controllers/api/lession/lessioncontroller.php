@@ -53,7 +53,11 @@ class lessioncontroller extends Controller
     {
         try {
             $data = Lession::all();
-            return response()->json(['success'=>true,'data'=>$data,'message'=>'lession show successfully']);
+            $quiz = DB::table('lessions')
+        ->join('add_assessments','lessions.id','=','add_assessments.lessions_id')
+        ->select('add_assessments.quiz_title')
+        ->count();
+            return response()->json(['success'=>true,'data'=>$data,'quiz'=>$quiz,'message'=>'lession show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }
@@ -77,6 +81,22 @@ class lessioncontroller extends Controller
             } catch (\Throwable $th) {
                 return response()->json(['message'=>$th->getmessage()]);
             }
+        }
+    }
+
+    public function lession_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Lession::where('id',$request->id)->first();
+            return response()->json(['success'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>$th->getmessage()]);
         }
     }
 }

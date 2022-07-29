@@ -75,7 +75,7 @@ class userscontroller extends Controller
         try {
             $data = DB::table('users')
             ->join('roles','users.role_id','=','roles.id')
-            ->select('users.user_name','users.email','users.gender','users.status','roles.role_name')
+            ->select('users.id','users.user_name','users.email','users.gender','users.status','roles.role_name')
             ->get();
             return response()->json(['success'=>true,'data'=>$data,'message'=>'user list show successfully']);
         } catch (\Throwable $th) {
@@ -127,6 +127,22 @@ class userscontroller extends Controller
         try {
             $request->user()->currentAccessToken()->delete();
             return response()->json(['success'=>true,'message'=>'user logout successfully']);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
+    }
+
+    public function user_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = User::where('id',$request->id)->first();
+            return response()->json(['success'=>true,'data'=>$data]);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }

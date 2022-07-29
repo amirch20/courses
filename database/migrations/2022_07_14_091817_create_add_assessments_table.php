@@ -20,6 +20,8 @@ class CreateAddAssessmentsTable extends Migration
             $table->string('total_marks');
             $table->longText('instrument')->nullable()->default('text');
             $table->datetime('deleted_at')->nullable();
+            $table->unsignedBigInteger('lessions_id');
+            $table->foreign('lessions_id')->references('id')->on('lessions')->onDelete('cascade');
             $table->timestamps();
         });
     }

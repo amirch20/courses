@@ -27,7 +27,6 @@ class coursecontroller extends Controller
         $image = $request->file('thumbnail')->store('public/images');
         $filename = $request->file('thumbnail')->hashName();
         $pic = ('storage/images/'.$imageName1);
-        $data->subjects_id = $request->subjects_id??$data->subjects_id;
         $query = $data->save();
         }
         else
@@ -45,7 +44,6 @@ class coursecontroller extends Controller
             'price' => 'required',
             'course_privacy' => 'required',
             'thumbnail' => 'required',
-            'subjects_id'=>'required'
         ]);
         if($validator->fails()){
             return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -65,7 +63,6 @@ class coursecontroller extends Controller
         $imageName1 = time().'.'.$request->thumbnail->getClientOriginalName();
         $request->thumbnail->move(public_path('images'),$imageName1);
         $data->thumbnail=$imageName1;
-        $data->subjects_id = $request->subjects_id;
         $query=$data->save();
         }
         if($query)
@@ -90,7 +87,7 @@ class coursecontroller extends Controller
         // return !empty($data) ? URL::to('/storage/images/'.$data) : 'empty';
         try {
             $data = Course::join('categories','categories.id', '=', 'courses.category_id')
-        ->select('categories.category_name','courses.course_title','courses.instructor','courses.price','courses.course_privacy','courses.sales','courses.lession')
+        ->select('courses.id','categories.category_name','courses.course_title','courses.instructor','courses.price','courses.course_privacy','courses.sales','courses.lession')
         ->get();
        return response()->json(['success'=>true,'data'=>$data,'message'=>'course list show successfully']);
         } catch (\Throwable $th) {
@@ -114,5 +111,21 @@ class coursecontroller extends Controller
             return response()->json(['message'=>$th->getmessage()]);
         }
     }
+    }
+
+    public function course_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Course::where('id',$request->id)->first();
+            return response()->json(['success'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>$th->getmessage()]);
+        }
     }
 }

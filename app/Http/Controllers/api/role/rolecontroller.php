@@ -54,7 +54,7 @@ class rolecontroller extends Controller
     public function role_list()
     {
         try {
-            $data = Role::all('role_name','status');
+            $data = Role::all('role_name','status','id');
             return response()->json(['success'=>true,'data'=>$data,'message'=>'role list show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
@@ -77,5 +77,22 @@ class rolecontroller extends Controller
                 return response()->json(['message'=>$th->getmessage()]);
             }
         }
+    }
+
+    public function role_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Role::where('id',$request->id)->first();
+            return response()->json(['success'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
+
     }
 }

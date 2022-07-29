@@ -13,6 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'stripe/*',
-        'https://admin.dhikrfikr.com/public/api',
+        'https://admin.dhikrfikr.com/public/api/*',
     ];
 }
