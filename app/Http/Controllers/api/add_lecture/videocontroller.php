@@ -19,6 +19,8 @@ class videocontroller extends Controller
                 $imageName = time().'.'.$request->video_file->getClientOriginalExtension();
                 $request->video_file->move(public_path('images'),$imageName);
                 $data->video_file=$imageName??$data->video_file;
+                $data->lessions_id = $request->lessions_id??$data->lessions_id;
+                $data->lecture_type = 'video';
                 $query = $data->save();
             }
             else
@@ -27,6 +29,7 @@ class videocontroller extends Controller
                     'video_title' => 'required',
                     'video_description' => 'required',
                     'video_file' => 'required',
+                    'lessions_id'=>'required',
                 ]);
                 if($validator->fails()){
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -37,6 +40,8 @@ class videocontroller extends Controller
                 $imageName = time().'.'.$request->video_file->getClientOriginalExtension();
                 $request->video_file->move(public_path('images'),$imageName);
                 $data->video_file=$imageName;
+                $data->lessions_id = $request->lessions_id;
+                $data->lecture_type = 'video';
                 $query = $data->save();
             }
             if($query)
@@ -83,6 +88,20 @@ class videocontroller extends Controller
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }
-
+    }
+    public function video_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Video::where('id',$request->id)->first();
+            return response()->json(['message'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
     }
 }

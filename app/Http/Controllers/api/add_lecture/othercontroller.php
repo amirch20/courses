@@ -18,6 +18,7 @@ class othercontroller extends Controller
                 $data->video_description=$request->video_description??$data->video_description;
                 $data->video_url=$request->video_url??$data->video_url;
                 $data->lecture_type='other video';
+                $data->lessions_id=$request->lessions_id??$data->lessions_id;
                 $query=$data->save();
             }
             else
@@ -26,6 +27,7 @@ class othercontroller extends Controller
                     'video_title' => 'required',
                     'video_description' => 'required',
                     'video_url' => 'required',
+                    'lessions_id'=>'required',
                 ]);
                 if($validator->fails()){
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -35,6 +37,7 @@ class othercontroller extends Controller
                 $data->video_description=$request->video_description;
                 $data->video_url=$request->video_url;
                 $data->lecture_type='other video';
+                $data->lessions_id=$request->lessions_id;
                 $query=$data->save();
             }
             if($query)
@@ -83,5 +86,21 @@ class othercontroller extends Controller
     } catch (\Throwable $th) {
         return response()->json(['message'=>$th->getmessage()]);
     }
+    }
+
+    public function other_video_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Lecture_Other_Video::where('id',$request->id)->first();
+            return response()->json(['message'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
     }
 }

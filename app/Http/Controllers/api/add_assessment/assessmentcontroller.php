@@ -18,6 +18,7 @@ class assessmentcontroller extends Controller
                 $data->quiz_duration=$request->quiz_duration??$data->quiz_duration;
                 $data->total_marks=$request->total_marks??$data->total_marks;
                 $data->instrument=$request->instrument??$data->instrument;
+                $data->lessions_id=$request->lessions_id??$data->lessions_id;
                 $query=$data->save();
             }
             else
@@ -27,6 +28,7 @@ class assessmentcontroller extends Controller
                     'quiz_duration' => 'required',
                     'total_marks' => 'required',
                     'instrument' => 'required',
+                    'lessions_id'=>'required',
                 ]);
                 if($validator->fails()){
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -36,6 +38,7 @@ class assessmentcontroller extends Controller
                 $data->quiz_duration=$request->quiz_duration;
                 $data->total_marks=$request->total_marks;
                 $data->instrument=$request->instrument;
+                $data->lessions_id=$request->lessions_id;
                 $query=$data->save();
             }
             if($query)
@@ -83,5 +86,21 @@ class assessmentcontroller extends Controller
     } catch (\Throwable $th) {
         return response()->json(['message'=>$th->getmessage()]);
     }
+    }
+
+    public function assessment_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = add_assessment::where('id',$request->id)->first();
+            return response()->json(['message'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
     }
 }

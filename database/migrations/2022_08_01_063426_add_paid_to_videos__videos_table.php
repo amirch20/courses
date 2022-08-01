@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPaidToLectureTextsTable extends Migration
+class AddPaidToVideosVideosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddPaidToLectureTextsTable extends Migration
      */
     public function up()
     {
-        Schema::table('lecture__texts', function (Blueprint $table) {
+        Schema::table('videos', function (Blueprint $table) {
             $table->string('lecture_type');
         });
     }
@@ -25,7 +25,7 @@ class AddPaidToLectureTextsTable extends Migration
      */
     public function down()
     {
-        Schema::table('lecture__texts', function (Blueprint $table) {
+        Schema::table('videos', function (Blueprint $table) {
             $table->string('lecture_type');
         });
     }

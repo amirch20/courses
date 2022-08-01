@@ -20,6 +20,8 @@ class CreateSubjectsTable extends Migration
             $table->foreign('teachers_id')->references('id')->on('teachers')->onDelete('cascade');
             $table->unsignedBigInteger('modules_id');
             $table->foreign('modules_id')->references('id')->on('modules')->onDelete('cascade');
+            $table->unsignedBigInteger('courses_id');
+            $table->foreign('courses_id')->references('id')->on('courses')->onDelete('cascade');
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });

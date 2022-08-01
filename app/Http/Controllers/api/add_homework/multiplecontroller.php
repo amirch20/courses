@@ -95,4 +95,20 @@ class multiplecontroller extends Controller
         return response()->json(['message'=>$th->getmessage()]);
     }
     }
+
+    public function multiple_choice_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Multiple_Choice::where('id',$request->id)->first();
+            return response()->json(['message'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
+    }
 }

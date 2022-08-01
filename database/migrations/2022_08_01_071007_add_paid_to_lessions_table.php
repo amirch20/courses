@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPaidToSubjectsTable extends Migration
+class AddPaidToLessionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddPaidToSubjectsTable extends Migration
      */
     public function up()
     {
-        Schema::table('subjects', function (Blueprint $table) {
+        Schema::table('lessions', function (Blueprint $table) {
             $table->unsignedBigInteger('courses_id');
             $table->foreign('courses_id')->references('id')->on('courses')->onDelete('cascade');
         });
@@ -26,7 +26,7 @@ class AddPaidToSubjectsTable extends Migration
      */
     public function down()
     {
-        Schema::table('subjects', function (Blueprint $table) {
+        Schema::table('lessions', function (Blueprint $table) {
             $table->unsignedBigInteger('courses_id');
             $table->foreign('courses_id')->references('id')->on('courses')->onDelete('cascade');
         });

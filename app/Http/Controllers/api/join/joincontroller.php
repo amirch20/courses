@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\join;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Subject;
 use App\Models\Module;
 use App\Models\Lession;
 use Illuminate\Support\Facades\{DB,Validator};
@@ -14,23 +15,16 @@ class joincontroller extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'subjects_id' => 'required',
+                'course_id' => 'required',
             ]);
             if($validator->fails()){
                 return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
             }
-            $data = Course::where('courses.subjects_id',$request->subjects_id)
-            ->join('subjects', 'subjects.id', '=', 'courses.subjects_id')
-            ->join('teachers', 'subjects.teachers_id', '=', 'teachers.id')
-            ->join('modules','subjects.modules_id','=','modules.id')
-            ->join('lessions','modules.lessions_id','=','lessions.id')
-            ->select('teachers.teacher_name','subjects.name')
+            $data = Subject::where('courses_id',$request->courses_id)
+            ->join('courses', 'subjects.courses_id', '=', 'courses.id')
+            ->select('subjects.name')
             ->get();
-         $count =$data[0]->id;
-         $col=count(array($count));
-         $count2=$data[0]->created_at;
-         $lession=count(array($count2));
-            return response()->json(['success'=>true,'data'=>$data,'modules'=>$col,'lession'=>$lession,'message'=>'subjects name show successfully']);
+            return response()->json(['success'=>true,'data'=>$data,'message'=>'subjects name show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }

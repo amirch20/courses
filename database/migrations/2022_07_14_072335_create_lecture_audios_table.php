@@ -18,6 +18,9 @@ class CreateLectureAudiosTable extends Migration
             $table->string('audio_title');
             $table->longText('audio_description')->nullable()->default('text');
             $table->string('audio_file');
+            $table->string('lecture_type');
+            $table->unsignedBigInteger('lessions_id');
+            $table->foreign('lessions_id')->references('id')->on('lessions')->onDelete('cascade');
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });

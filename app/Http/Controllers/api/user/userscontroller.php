@@ -141,7 +141,11 @@ class userscontroller extends Controller
             if($validator->fails()){
                 return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
             }
-            $data = User::where('id',$request->id)->first();
+           $data=DB::table('users')
+             ->select('id', 'user_name', 'email', 'gender','role_id')
+             ->where('id','=', $request->id)
+             ->first();
+
             return response()->json(['success'=>true,'data'=>$data]);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);

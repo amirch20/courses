@@ -20,6 +20,7 @@ class documentcontroller extends Controller
                 $request->document_file->move(public_path('images'),$imageName);
                 $data->document_file=$imageName??$data->document_file;
                 $data->lecture_type="document";
+                $data->lessions_id=$request->lessions_id??$data->lessions_id;
                 $query=$data->save();
             }
             else
@@ -28,6 +29,7 @@ class documentcontroller extends Controller
                     'document_title' => 'required',
                     'document_description' => 'required',
                     'document_file' => 'required',
+                    'lessions_id'=>'required',
                 ]);
                 if($validator->fails()){
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -39,6 +41,7 @@ class documentcontroller extends Controller
                 $request->document_file->move(public_path('images'),$imageName);
                 $data->document_file=$imageName;
                 $data->lecture_type="document";
+                $data->lessions_id=$request->lessions_id;
                 $query = $data->save();
             }
             if($query)
@@ -88,4 +91,21 @@ class documentcontroller extends Controller
         return response()->json(['message'=>$th->getmessage()]);
     }
     }
+
+    public function document_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+            ]);
+            if($validator->fails()){
+                return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+            }
+            $data = Lecture_Document::where('id',$request->id)->first();
+            return response()->json(['message'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>$th->getmessage()]);
+        }
+    }
+
 }

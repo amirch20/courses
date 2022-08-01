@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB,Validator};
 use App\Models\Course;
+use App\Models\Lession;
 use URL;
 use Illuminate\Support\Facades\Storage;
 class coursecontroller extends Controller
@@ -83,13 +84,15 @@ class coursecontroller extends Controller
     }
     public function course_list()
     {
-        // $data=Course::all()->pluck('thumbnail');
-        // return !empty($data) ? URL::to('/storage/images/'.$data) : 'empty';
+
         try {
             $data = Course::join('categories','categories.id', '=', 'courses.category_id')
-        ->select('courses.id','categories.category_name','courses.course_title','courses.instructor','courses.price','courses.course_privacy','courses.sales','courses.lession')
+        ->select('courses.id','categories.category_name','courses.course_title','courses.instructor','courses.price','courses.course_privacy','courses.sales')
         ->get();
-       return response()->json(['success'=>true,'data'=>$data,'message'=>'course list show successfully']);
+        $lession = DB::table('courses')
+        ->join('lessions','courses.id','=','lessions.courses_id')
+        ->select('lessions.name')->count();
+       return response()->json(['success'=>true,'data'=>$data,'lession'=>$lession,'message'=>'course list show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }

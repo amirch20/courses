@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB,Validator};
 use App\Models\Subject;
+use App\Models\Module;
+use App\Models\Lession;
 class subjectcontroller extends Controller
 {
     public function subject_store(Request $request)
@@ -72,15 +74,11 @@ class subjectcontroller extends Controller
             $data= Subject::where('courses_id',$request->courses_id)
             ->join('courses','subjects.courses_id','=','courses.id')
             ->join('teachers','subjects.teachers_id','=','teachers.id')
-            ->join('modules','subjects.modules_id','=','modules.id')
-            ->join('lessions','modules.lessions_id','=','lessions.id')
             ->select('subjects.id','subjects.name','teachers.teacher_name')
             ->get();
-            $count = $data[0]->id;
-            $module = count(array($count));
-            $num = $data[0]->created_at;
-            $lession = count(array($num));
-            return response()->json(['success'=>true,'data'=>$data,'module'=>$module,'lession'=>$lession,'message'=>'subject show successfully']);
+            $module=Module::where('courses_id',$request->courses_id)->count();
+            $lession = Lession::where('courses_id',$request->courses_id)->count();
+            return response()->json(['success'=>true,'data'=>$data,'modules'=>$module,'lession'=>$lession,'message'=>'subject show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }
@@ -104,5 +102,22 @@ class subjectcontroller extends Controller
                 return response()->json(['message'=>$th->getmessage()]);
             }
         }
+    }
+
+    public function subject_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+        }
+        $data = Subject::where('id',$request->id)->first();
+        return response()->json(['success'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+        return response()->json(['message'=>$th->getmessage()]);
+        }
+
     }
 }

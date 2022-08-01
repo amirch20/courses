@@ -18,6 +18,9 @@ class CreateCourseVideosTable extends Migration
             $table->string('video_title');
             $table->longText('video_description')->nullable()->default('text');
             $table->string('video_url');
+            $table->unsignedBigInteger('lessions_id');
+            $table->foreign('lessions_id')->references('id')->on('lessions')->onDelete('cascade');
+            $table->string('lecture_type');
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });

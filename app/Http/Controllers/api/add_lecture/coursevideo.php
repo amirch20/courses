@@ -17,6 +17,8 @@ class coursevideo extends Controller
                 $data->video_title = $request->video_title??$data->video_title;
                 $data->video_description = $request->video_description??$data->video_description;
                 $data->video_url = $request->video_url??$data->video_url;
+                $data->lessions_id = $request->lessions_id??$data->lessions_id;
+                $data->lecture_type = 'lecture_video';
                 $query = $data->save();
             }
             else
@@ -25,6 +27,7 @@ class coursevideo extends Controller
                     'video_title' => 'required',
                     'video_description' => 'required',
                     'video_url' => 'required',
+                    'lessions_id'=>'required',
                 ]);
                 if($validator->fails()){
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -33,6 +36,8 @@ class coursevideo extends Controller
                 $data->video_title = $request->video_title;
                 $data->video_description = $request->video_description;
                 $data->video_url = $request->video_url;
+                $data->lessions_id = $request->lessions_id;
+                $data->lecture_type = 'lecture_video';
                 $query = $data->save();
             }
             if($query)
@@ -76,6 +81,22 @@ class coursevideo extends Controller
             return response()->json(['success'=>true,'message'=>'course_video delete successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
+        }
+    }
+
+    public function course_video_edit(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
+        }
+        $data = Course_Video::where('id',$request->id)->first();
+        return response()->json(['success'=>true,'data'=>$data]);
+        } catch (\Throwable $th) {
+        return response()->json(['message'=>$th->getmessage()]);
         }
     }
 }
