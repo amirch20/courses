@@ -15,11 +15,9 @@ class CreateModulesTable extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('lessions_id');
-            $table->foreign('lessions_id')->references('id')->on('lessions')->onDelete('cascade');
-            $table->unsignedBigInteger('courses_id');
-            $table->foreign('courses_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->string('module_name');
+            $table->unsignedBigInteger('subjects_id');
+            $table->foreign('subjects_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });

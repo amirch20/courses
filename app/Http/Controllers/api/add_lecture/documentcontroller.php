@@ -20,7 +20,7 @@ class documentcontroller extends Controller
                 $request->document_file->move(public_path('images'),$imageName);
                 $data->document_file=$imageName??$data->document_file;
                 $data->lecture_type="document";
-                $data->lessions_id=$request->lessions_id??$data->lessions_id;
+                $data->lessions_id = $request->lessions_id??$data->lessions_id;
                 $query=$data->save();
             }
             else
@@ -41,7 +41,7 @@ class documentcontroller extends Controller
                 $request->document_file->move(public_path('images'),$imageName);
                 $data->document_file=$imageName;
                 $data->lecture_type="document";
-                $data->lessions_id=$request->lessions_id;
+                $data->lessions_id = $request->lessions_id;
                 $query = $data->save();
             }
             if($query)

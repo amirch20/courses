@@ -15,7 +15,9 @@ class CreateLessionsTable extends Migration
     {
         Schema::create('lessions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('lession_name');
+            $table->unsignedBigInteger('modules_id');
+            $table->foreign('modules_id')->references('id')->on('modules')->onDelete('cascade');
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });

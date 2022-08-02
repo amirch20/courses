@@ -16,9 +16,11 @@ class othercontroller extends Controller
                 $data = Lecture_Other_Video::find($request->id);
                 $data->video_title=$request->video_title??$data->video_title;
                 $data->video_description=$request->video_description??$data->video_description;
-                $data->video_url=$request->video_url??$data->video_url;
+                $imageName = time().'.'.$request->video_url->getClientOriginalExtension();
+                $request->video_url->move(public_path('images'),$imageName);
+                $data->video_url=$imageName??$data->video_url;
                 $data->lecture_type='other video';
-                $data->lessions_id=$request->lessions_id??$data->lessions_id;
+                $data->lessions_id = $request->lessions_id??$data->lessions_id;
                 $query=$data->save();
             }
             else
@@ -35,9 +37,11 @@ class othercontroller extends Controller
                 $data = new Lecture_Other_Video;
                 $data->video_title=$request->video_title;
                 $data->video_description=$request->video_description;
-                $data->video_url=$request->video_url;
+                $imageName = time().'.'.$request->video_url->getClientOriginalExtension();
+                $request->video_url->move(public_path('images'),$imageName);
+                $data->video_url=$imageName;
                 $data->lecture_type='other video';
-                $data->lessions_id=$request->lessions_id;
+                $data->lessions_id = $request->lessions_id;
                 $query=$data->save();
             }
             if($query)

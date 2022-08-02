@@ -141,7 +141,6 @@ Route::post('child_category_filter',[App\Http\Controllers\api\filter\filtercontr
 Route::post('subject_filter',[App\Http\Controllers\api\filter\filtercontroller::class,'subject_filter']);
 Route::post('modules_filter',[App\Http\Controllers\api\filter\filtercontroller::class,'modules_filter']);
 Route::post('lession_filter',[App\Http\Controllers\api\filter\filtercontroller::class,'lession_filter']);
-
 ////////////////forntend....................................
 Route::post('admin_signup',[App\Http\Controllers\api\admin\admincontroller::class,'admin_signup']);
 Route::post('admin_login',[App\Http\Controllers\api\admin\admincontroller::class,'admin_login']);
@@ -160,4 +159,5 @@ Route::post('review_delete',[App\Http\Controllers\api\review\reviewcontroller::c
 Route::post('subject_join',[App\Http\Controllers\api\join\joincontroller::class,'subject_join']);
 Route::post('module_join',[App\Http\Controllers\api\join\joincontroller::class,'module_join']);
 Route::post('lession_join',[App\Http\Controllers\api\join\joincontroller::class,'lession_join']);
+Route::get('lecture_join',[App\Http\Controllers\api\join\joincontroller::class,'lecture_join']);
 });

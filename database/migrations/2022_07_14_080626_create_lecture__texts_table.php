@@ -18,8 +18,6 @@ class CreateLectureTextsTable extends Migration
             $table->string('title');
             $table->string('text');
             $table->string('lecture_type');
-            $table->unsignedBigInteger('lessions_id');
-            $table->foreign('lessions_id')->references('id')->on('lessions')->onDelete('cascade');
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });

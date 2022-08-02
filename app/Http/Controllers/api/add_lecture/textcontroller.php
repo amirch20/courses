@@ -17,7 +17,7 @@ class textcontroller extends Controller
                 $data->title=$request->title??$data->title;
                 $data->text=$request->text??$data->text;
                 $data->lecture_type="text";
-                $data->lessions_id=$request->lessions_id??$data->lessions_id;
+                $data->lessions_id = $request->lessions_id??$data->lessions_id;
                 $query=$data->save();
             }
             else
@@ -25,7 +25,7 @@ class textcontroller extends Controller
                 $validator = Validator::make($request->all(), [
                     'title' => 'required',
                     'text' => 'required',
-                    'lessions_id'=>'required',
+                    'lessions_id'=>'required'
                 ]);
                 if($validator->fails()){
                     return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
@@ -34,7 +34,7 @@ class textcontroller extends Controller
                 $data->title=$request->title;
                 $data->text=$request->text;
                 $data->lecture_type="text";
-                $data->lessions_id=$request->lessions_id??$data->lessions_id;
+                $data->lessions_id=$request->lessions_id;
                 $query=$data->save();
             }
             if($query)

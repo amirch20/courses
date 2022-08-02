@@ -20,7 +20,7 @@ class audiocontroller extends Controller
                 $request->audio_file->move(public_path('images'),$imageName);
                 $data->audio_file=$imageName??$data->audio_file;
                 $data->lecture_type="audio";
-                $data->lessions_id=$request->lessions_id??$data->lessions_id;
+                $data->lessions_id = $request->lessions_id??$data->lessions_id;
                 $query=$data->save();
             }
             else

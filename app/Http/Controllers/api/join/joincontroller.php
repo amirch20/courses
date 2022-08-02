@@ -15,14 +15,14 @@ class joincontroller extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'course_id' => 'required',
+                'courses_id' => 'required',
             ]);
             if($validator->fails()){
                 return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
             }
             $data = Subject::where('courses_id',$request->courses_id)
             ->join('courses', 'subjects.courses_id', '=', 'courses.id')
-            ->select('subjects.name')
+            ->select('subjects.subject_name')
             ->get();
             return response()->json(['success'=>true,'data'=>$data,'message'=>'subjects name show successfully']);
         } catch (\Throwable $th) {
@@ -33,18 +33,18 @@ class joincontroller extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'modules_id' => 'required',
+                'subjects_id' => 'required',
             ]);
             if($validator->fails()){
                 return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
             }
-            $data =Module::where('subjects.modules_id',$request->modules_id)
-            ->join('subjects','subjects.modules_id', '=', 'modules.id')
-            ->select('modules.name')
+            $data =Module::where('subjects_id',$request->subjects_id)
+            ->join('subjects','subjects.id', '=', 'modules.subjects_id')
+            ->select('modules.module_name')
             ->get();
             return response()->json(['success'=>true,'data'=>$data,'message'=>'module name show successfully']);
         } catch (\Throwable $th) {
-            return response()->json(['message'=>$th->getmessage]);
+            return response()->json(['message'=>$th->getmessage()]);
         }
     }
 
@@ -52,19 +52,33 @@ class joincontroller extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'lessions_id' => 'required',
+                'modules_id' => 'required',
             ]);
             if($validator->fails()){
                 return response()->json(['success'=>false, 'data'=> json_decode(json_encode([],JSON_FORCE_OBJECT)), 'message'=> $validator->errors()->first()]);
             }
-            $data = Module::where('modules.lessions_id',$request->lessions_id)
-            ->join('lessions','lessions.id', '=', 'modules.lessions_id')
-            ->select('lessions.name')
+            $data = Lession::where('modules_id',$request->modules_id)
+            ->join('modules','modules.id', '=', 'lessions.modules_id')
+            ->select('lessions.lession_name')
             ->get();
             return response()->json(['success'=>true,'data'=>$data,'message'=>'lession show successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message'=>$th->getmessage()]);
         }
+    }
 
+    public function lecture_join(Request $request)
+    {
+        $lecture = DB::table('lessions')
+        ->join('course__videos','course__videos.lessions_id','=','lessions.id')
+        ->join('videos','videos.lessions_id','=','lessions.id')
+        ->join('lecture_audios','lecture_audios.lessions_id','=','lessions.id')
+        ->join('lecture__documents','lecture__documents.lessions_id','=','lessions.id')
+        ->join('lecture__images','lecture__images.lessions_id','=','lessions.id')
+        ->join('lecture__other__videos','lecture__other__videos.lessions_id','=','lessions.id')
+        ->join('lecture__texts','lecture__texts.lessions_id','=','lessions.id')
+        ->select('course__videos.video_url','videos.video_file','lecture_audios.id','lecture__documents.document_file','lecture__images.image_title','lecture__other__videos.video_description','lecture__texts.text')
+        ->get();
+        return $lecture;
     }
 }

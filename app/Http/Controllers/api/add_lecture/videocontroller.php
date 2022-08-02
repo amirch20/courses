@@ -19,8 +19,8 @@ class videocontroller extends Controller
                 $imageName = time().'.'.$request->video_file->getClientOriginalExtension();
                 $request->video_file->move(public_path('images'),$imageName);
                 $data->video_file=$imageName??$data->video_file;
-                $data->lessions_id = $request->lessions_id??$data->lessions_id;
                 $data->lecture_type = 'video';
+                $data->lessions_id = $request->lessions_id??$data->lessions_id;
                 $query = $data->save();
             }
             else
@@ -40,8 +40,8 @@ class videocontroller extends Controller
                 $imageName = time().'.'.$request->video_file->getClientOriginalExtension();
                 $request->video_file->move(public_path('images'),$imageName);
                 $data->video_file=$imageName;
-                $data->lessions_id = $request->lessions_id;
                 $data->lecture_type = 'video';
+                $data->lessions_id=$request->lessions_id;
                 $query = $data->save();
             }
             if($query)

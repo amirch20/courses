@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCourseVideosTable extends Migration
+class AddPaidToLectureTextsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,9 @@ class CreateCourseVideosTable extends Migration
      */
     public function up()
     {
-        Schema::create('course__videos', function (Blueprint $table) {
-            $table->id();
-            $table->string('video_title');
-            $table->longText('video_description')->nullable()->default('text');
-            $table->string('video_url');
-            $table->string('lecture_type');
+        Schema::table('lecture__texts', function (Blueprint $table) {
             $table->unsignedBigInteger('lessions_id');
             $table->foreign('lessions_id')->references('id')->on('lessions')->onDelete('cascade');
-            $table->datetime('deleted_at')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -33,6 +26,9 @@ class CreateCourseVideosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course__videos');
+        Schema::table('lecture__texts', function (Blueprint $table) {
+            $table->unsignedBigInteger('lessions_id');
+            $table->foreign('lessions_id')->references('id')->on('lessions')->onDelete('cascade');
+        });
     }
 }
